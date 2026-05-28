@@ -5,55 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Global Vision Financial Panel: Real-time global monitoring, country data, and financial insights.">
-    <meta name="keywords" content="financial panel, global data, currency rates, country monitoring, live dashboard, visionpanel">
-    <meta name="author" content="Ömer Demir">
-    <meta property="og:title" content="Global Vision Financial Panel">
-    <meta property="og:description" content="Explore real-time global country data and financial monitoring.">
-    <meta property="og:type" content="website">
-    
     <title>Global Vision Financial Panel</title>
-    
     <style>
         body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        
-        /* Üst Bilgi Paneli */
         #header-panel { background: #111; padding: 20px; border-bottom: 2px solid #00d4ff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .info-area { color: #aaa; font-size: 0.85em; max-width: 60%; }
-        .support-section { text-align: right; }
-        .support-btn { background: #ff5e00; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; transition: 0.3s; }
-        .support-btn:hover { background: #e05300; }
-        
+        .support-btn { background: #ff5e00; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
         .container { padding: 20px; }
         .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; background: #111; color: #fff; font-size: 1.2em; display: block; margin: 20px auto; text-align: center; }
         .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-        .card { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333; transition: 0.3s; }
-        .card:hover { border-color: #00d4ff; }
-        h3 { color: #00d4ff; margin-top: 0; }
+        .card { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333; }
+        h3 { color: #00d4ff; margin: 0 0 10px 0; }
+        .data { font-size: 0.9em; color: #ccc; }
     </style>
 </head>
 <body>
 
-    <!-- Üst Bilgi Paneli -->
     <div id="header-panel">
-        <div class="info-area">
-            <h2 style="margin:0; color:#fff;">Global Vision Financial Panel</h2>
-            <p style="margin:5px 0;">Real-time global monitoring and financial data hub. Support this project to keep the servers live and the data updated.</p>
+        <div>
+            <h2 style="margin:0;">Global Vision Financial Panel</h2>
+            <p style="margin:5px 0;">Live time and currency reference data.</p>
         </div>
-        <div class="support-section">
-            <a href="https://donate.bynogame.com/supportvisionpanel" target="_blank" class="support-btn">
-                Support Project ❤️
-            </a>
-        </div>
+        <a href="https://donate.bynogame.com/supportvisionpanel" target="_blank" class="support-btn">Support Project ❤️</a>
     </div>
 
     <div class="container">
-        <input type="text" class="search-box" id="arama" placeholder="Search country..." oninput="updatePanel()">
+        <input type="text" class="search-box" id="arama" placeholder="Search country (e.g. Turkey)..." oninput="updatePanel()">
         <div class="results" id="liste"></div>
     </div>
 
     <script>
-        const countries = [
-            { name: 'Afghanistan', zone: 'Asia/Kabul' }, { name: 'Germany', zone: 'Europe/Berlin' },
+        const data = [
+             { name: 'Afghanistan', zone: 'Asia/Kabul' }, { name: 'Germany', zone: 'Europe/Berlin' },
             { name: 'USA', zone: 'America/New_York' }, { name: 'American Samoa', zone: 'Pacific/Pago_Pago' },
             { name: 'Andorra', zone: 'Europe/Andorra' }, { name: 'Angola', zone: 'Africa/Luanda' },
             { name: 'Antigua and Barbuda', zone: 'America/Antigua' }, { name: 'Argentina', zone: 'America/Argentina/Buenos_Aires' },
@@ -154,10 +136,13 @@
             const liste = document.getElementById('liste');
             liste.innerHTML = '';
             
-            countries.filter(c => c.name.toLowerCase().includes(aranan)).forEach(c => {
+            data.filter(c => c.name.toLowerCase().includes(aranan)).forEach(c => {
                 const div = document.createElement('div');
                 div.className = 'card';
-                div.innerHTML = `<h3>${c.name}</h3><p>Local Time: ${new Date().toLocaleTimeString('en-US', {timeZone: c.zone})}</p>`;
+                div.innerHTML = `<h3>${c.name}</h3>
+                                 <p class="data">Time: ${new Date().toLocaleTimeString('en-US', {timeZone: c.zone})}</p>
+                                 <p class="data">Currency: ${c.curr}</p>
+                                 <p class="data">Rate (1 USD): ${c.rate} ${c.curr}</p>`;
                 liste.appendChild(div);
             });
         }
