@@ -2,41 +2,60 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VisionPanel | Canlı Piyasa Terminali</title>
+    <title>VisionPanel | Global Hub</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-        .ana-yayin { width: 100vw; height: 80vh; background: #000; }
-        iframe { width: 100%; height: 100%; }
-        .serit-kutusu { height: 20vh; background: #d00; display: flex; align-items: center; overflow: hidden; border-top: 4px solid #fff; }
-        #ticker { font-size: 2em; font-weight: bold; white-space: nowrap; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Orta Bölüm: Saatler ve Hava Durumu */
+        .orta-alan { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .saat-kutu { font-size: 3em; margin-bottom: 20px; }
+        
+        /* Navigasyon Butonları */
+        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; width: 80%; margin-bottom: 30px; }
+        .btn { background: #333; color: #fff; padding: 15px; text-decoration: none; border-radius: 8px; border: 1px solid #555; transition: 0.3s; }
+        .btn:hover { background: #d00; }
+
+        /* Alt Şerit (Fiyatlar) */
+        .serit-kutusu { height: 10vh; background: #d00; display: flex; align-items: center; overflow: hidden; border-top: 4px solid #fff; }
+        #ticker { font-size: 1.5em; font-weight: bold; white-space: nowrap; }
     </style>
 </head>
 <body>
 
-    <div class="ana-yayin">
-        <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+    <div class="orta-alan">
+        <div class="saat-kutu" id="saatler">Yükleniyor...</div>
+        
+        <div class="nav-grid">
+            <a href="https://x.com" class="btn">X (Twitter)</a>
+            <a href="https://instagram.com" class="btn">Instagram</a>
+            <a href="https://telegram.org" class="btn">Telegram</a>
+            <a href="https://binance.com" class="btn">CEX (Binance)</a>
+            <a href="https://uniswap.org" class="btn">DEX (Uniswap)</a>
+        </div>
     </div>
 
     <div class="serit-kutusu">
-        <div id="ticker" class="kayan-yazi">Veriler Yükleniyor...</div>
+        <div id="ticker" class="kayan-yazi">Piyasa verileri güncelleniyor...</div>
     </div>
 
     <script>
-        // Binance API kullanarak tüm kripto verilerini çekme
-        async function fetchCrypto() {
-            try {
-                const response = await fetch('https://api.binance.com/api/v3/ticker/price');
-                const data = await response.json();
-                // Önemli olanları filtrele ve metne dönüştür
-                const filter = data.filter(item => ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'XRPUSDT', 'ADAUSDT'].includes(item.symbol));
-                const tickerText = filter.map(item => `${item.symbol.replace('USDT', '')}: $${parseFloat(item.price).toFixed(2)}`).join(' | ');
-                document.getElementById('ticker').innerText = tickerText + " | " + new Date().toLocaleTimeString();
-            } catch (error) {
-                console.error("Veri çekilemedi:", error);
-            }
+        // Saatler
+        function updateTime() {
+            const options = { timeZone: 'UTC', timeStyle: 'medium' };
+            document.getElementById('saatler').innerHTML = 
+                `İstanbul: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'Europe/Istanbul'})} <br>` +
+                `New York: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'America/New_York'})} <br>` +
+                `Tokyo: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'Asia/Tokyo'})}`;
         }
-        
-        // 3 saniyede bir güncelle
+        setInterval(updateTime, 1000);
+
+        // Kripto Verileri
+        async function fetchCrypto() {
+            const response = await fetch('https://api.binance.com/api/v3/ticker/price');
+            const data = await response.json();
+            const filter = data.filter(item => ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT'].includes(item.symbol));
+            document.getElementById('ticker').innerText = filter.map(i => `${i.symbol}: $${parseFloat(i.price).toFixed(2)}`).join(' | ');
+        }
         setInterval(fetchCrypto, 3000);
         fetchCrypto();
     </script>
