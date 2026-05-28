@@ -2,47 +2,49 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VisionPanel | World Monitor</title>
+    <title>VisionPanel | Global Hub</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
-        .card { background: #111; border: 1px solid #333; padding: 25px; border-radius: 15px; width: 250px; text-align: center; }
-        .flag { font-size: 3em; margin-bottom: 10px; }
-        .city { font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: #00d4ff; }
-        .time { font-size: 2em; margin-bottom: 5px; }
-        .weather { color: #aaa; }
+        body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 1px solid #444; background: #111; color: #fff; font-size: 1.2em; text-align: center; }
+        .results { margin-top: 30px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .card { background: #1a1a1a; padding: 20px; border-radius: 10px; border-left: 5px solid #00d4ff; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="flag">🇹🇷</div>
-        <div class="city">İstanbul</div>
-        <div class="time" id="time-tr">--:--:--</div>
-        <div class="weather">20°C Bulutlu</div>
-    </div>
+    <h1>Dünya İzleme Merkezi</h1>
+    <input type="text" class="search-box" id="arama" placeholder="Ülke ismi yaz (örn: Almanya, Fransa, Çin...)" onkeyup="filtrele()">
 
-    <div class="card">
-        <div class="flag">🇺🇸</div>
-        <div class="city">New York</div>
-        <div class="time" id="time-us">--:--:--</div>
-        <div class="weather">18°C Güneşli</div>
-    </div>
-
-    <div class="card">
-        <div class="flag">🇯🇵</div>
-        <div class="city">Tokyo</div>
-        <div class="time" id="time-jp">--:--:--</div>
-        <div class="weather">24°C Yağmurlu</div>
-    </div>
+    <div class="results" id="liste"></div>
 
     <script>
-        function updateClocks() {
-            document.getElementById('time-tr').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'Europe/Istanbul'});
-            document.getElementById('time-us').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'America/New_York'});
-            document.getElementById('time-jp').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'Asia/Tokyo'});
+        const ülkeler = [
+            { ad: 'Türkiye', bayrak: '🇹🇷', saat: 'Europe/Istanbul' },
+            { ad: 'Almanya', bayrak: '🇩🇪', saat: 'Europe/Berlin' },
+            { ad: 'Fransa', bayrak: '🇫🇷', saat: 'Europe/Paris' },
+            { ad: 'Çin', bayrak: '🇨🇳', saat: 'Asia/Shanghai' },
+            { ad: 'ABD', bayrak: '🇺🇸', saat: 'America/New_York' },
+            { ad: 'Japonya', bayrak: '🇯🇵', saat: 'Asia/Tokyo' },
+            { ad: 'Birleşik Krallık', bayrak: '🇬🇧', saat: 'Europe/London' },
+            { ad: 'Brezilya', bayrak: '🇧🇷', saat: 'America/Sao_Paulo' }
+        ];
+
+        function filtrele() {
+            const aranan = document.getElementById('arama').value.toLowerCase();
+            const liste = document.getElementById('liste');
+            liste.innerHTML = '';
+            
+            ülkeler.filter(u => u.ad.toLowerCase().includes(aranan)).forEach(u => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `<h3>${u.bayrak} ${u.ad}</h3><p id="saat-${u.ad}">${new Date().toLocaleTimeString('tr-TR', {timeZone: u.saat})}</p>`;
+                liste.appendChild(div);
+            });
         }
-        setInterval(updateClocks, 1000);
-        updateClocks();
+        
+        // İlk yükleme
+        filtrele();
+        setInterval(filtrele, 1000);
     </script>
 </body>
 </html>
