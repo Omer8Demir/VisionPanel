@@ -2,29 +2,26 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VisionPanel | Global Hub</title>
+    <title>VisionPanel | Premium Terminal</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        body { margin: 0; background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); color: #fff; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; }
         
-        /* Orta Bölüm: Saatler ve Hava Durumu */
-        .orta-alan { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .saat-kutu { font-size: 3em; margin-bottom: 20px; }
+        .hero { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+        .clock-box { font-size: 2.5em; font-weight: bold; text-shadow: 0 0 20px rgba(0,212,255,0.5); }
         
-        /* Navigasyon Butonları */
-        .nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; width: 80%; margin-bottom: 30px; }
-        .btn { background: #333; color: #fff; padding: 15px; text-decoration: none; border-radius: 8px; border: 1px solid #555; transition: 0.3s; }
-        .btn:hover { background: #d00; }
+        .nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; width: 90%; max-width: 1000px; }
+        .btn { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); padding: 20px; color: #fff; text-align: center; text-decoration: none; border-radius: 12px; transition: 0.4s; }
+        .btn:hover { background: #00d4ff; box-shadow: 0 0 20px #00d4ff; border-color: #fff; }
 
-        /* Alt Şerit (Fiyatlar) */
-        .serit-kutusu { height: 10vh; background: #d00; display: flex; align-items: center; overflow: hidden; border-top: 4px solid #fff; }
-        #ticker { font-size: 1.5em; font-weight: bold; white-space: nowrap; }
+        .ticker-bar { height: 70px; background: rgba(200, 0, 0, 0.9); display: flex; align-items: center; border-top: 3px solid #fff; overflow: hidden; font-size: 1.4em; font-weight: bold; }
+        #ticker { animation: move 20s linear infinite; }
+        @keyframes move { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
 <body>
 
-    <div class="orta-alan">
-        <div class="saat-kutu" id="saatler">Yükleniyor...</div>
-        
+    <div class="hero">
+        <div class="clock-box" id="saatler">Yükleniyor...</div>
         <div class="nav-grid">
             <a href="https://x.com" class="btn">X (Twitter)</a>
             <a href="https://instagram.com" class="btn">Instagram</a>
@@ -34,27 +31,24 @@
         </div>
     </div>
 
-    <div class="serit-kutusu">
-        <div id="ticker" class="kayan-yazi">Piyasa verileri güncelleniyor...</div>
+    <div class="ticker-bar">
+        <div id="ticker"></div>
     </div>
 
     <script>
-        // Saatler
         function updateTime() {
-            const options = { timeZone: 'UTC', timeStyle: 'medium' };
             document.getElementById('saatler').innerHTML = 
-                `İstanbul: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'Europe/Istanbul'})} <br>` +
-                `New York: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'America/New_York'})} <br>` +
+                `İstanbul: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'Europe/Istanbul'})}<br>` +
+                `New York: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'America/New_York'})}<br>` +
                 `Tokyo: ${new Date().toLocaleTimeString('tr-TR', {timeZone: 'Asia/Tokyo'})}`;
         }
         setInterval(updateTime, 1000);
 
-        // Kripto Verileri
         async function fetchCrypto() {
-            const response = await fetch('https://api.binance.com/api/v3/ticker/price');
-            const data = await response.json();
-            const filter = data.filter(item => ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT'].includes(item.symbol));
-            document.getElementById('ticker').innerText = filter.map(i => `${i.symbol}: $${parseFloat(i.price).toFixed(2)}`).join(' | ');
+            const res = await fetch('https://api.binance.com/api/v3/ticker/price');
+            const data = await res.json();
+            const filter = data.filter(i => ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT'].includes(i.symbol));
+            document.getElementById('ticker').innerText = filter.map(i => `${i.symbol.replace('USDT','')}: $${parseFloat(i.price).toFixed(2)}`).join(' | ');
         }
         setInterval(fetchCrypto, 3000);
         fetchCrypto();
