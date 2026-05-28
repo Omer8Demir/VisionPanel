@@ -1,32 +1,41 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>VisionPanel | Global Hub</title>
+    <title>Global Monitoring Hub</title>
     <style>
         body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 1px solid #444; background: #111; color: #fff; font-size: 1.2em; text-align: center; }
-        .results { margin-top: 30px; width: 100%; max-width: 800px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .card { background: #1a1a1a; padding: 20px; border-radius: 10px; border-left: 5px solid #00d4ff; text-align: center; }
+        .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 1px solid #444; background: #111; color: #00d4ff; font-size: 1.2em; text-align: center; margin-bottom: 30px; }
+        .results { width: 100%; max-width: 1200px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .card { background: #1a1a1a; padding: 15px; border-radius: 10px; border-left: 4px solid #00d4ff; }
+        h3 { margin: 0 0 10px 0; color: #00d4ff; }
+        p { margin: 5px 0; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-    <h1>Dünya İzleme Merkezi</h1>
-    <input type="text" class="search-box" id="arama" placeholder="Ülke ismi yaz (örn: Almanya, Fransa, Çin...)" onkeyup="filtrele()">
+    <h1>Global Monitoring Hub</h1>
+    <input type="text" class="search-box" id="arama" placeholder="Search country (e.g. Turkey, Germany, Japan...)" oninput="filtrele()">
 
     <div class="results" id="liste"></div>
 
     <script>
-        const ülkeler = [
-            { ad: 'Türkiye', bayrak: '🇹🇷', saat: 'Europe/Istanbul' },
-            { ad: 'Almanya', bayrak: '🇩🇪', saat: 'Europe/Berlin' },
-            { ad: 'Fransa', bayrak: '🇫🇷', saat: 'Europe/Paris' },
-            { ad: 'Çin', bayrak: '🇨🇳', saat: 'Asia/Shanghai' },
-            { ad: 'ABD', bayrak: '🇺🇸', saat: 'America/New_York' },
-            { ad: 'Japonya', bayrak: '🇯🇵', saat: 'Asia/Tokyo' },
-            { ad: 'Birleşik Krallık', bayrak: '🇬🇧', saat: 'Europe/London' },
-            { ad: 'Brezilya', bayrak: '🇧🇷', saat: 'America/Sao_Paulo' }
+        // Veri tabanı: Paylaştığın liste baz alınarak İngilizce olarak güncellendi
+        const countries = [
+            { name: 'Afghanistan', capital: 'Kabul', lang: 'Pashto, Dari', currency: 'Afghani', zone: 'Asia/Kabul' },
+            { name: 'Germany', capital: 'Berlin', lang: 'German', currency: 'Euro', zone: 'Europe/Berlin' },
+            { name: 'USA', capital: 'Washington D.C.', lang: 'English', currency: 'US Dollar', zone: 'America/New_York' },
+            { name: 'Argentina', capital: 'Buenos Aires', lang: 'Spanish', currency: 'Peso', zone: 'America/Argentina/Buenos_Aires' },
+            { name: 'Australia', capital: 'Canberra', lang: 'English', currency: 'Australian Dollar', zone: 'Australia/Sydney' },
+            { name: 'Azerbaijan', capital: 'Baku', lang: 'Azeri', currency: 'Manat', zone: 'Asia/Baku' },
+            { name: 'Brazil', capital: 'Brasilia', lang: 'Portuguese', currency: 'Real', zone: 'America/Sao_Paulo' },
+            { name: 'China', capital: 'Beijing', lang: 'Chinese', currency: 'Yuan', zone: 'Asia/Shanghai' },
+            { name: 'France', capital: 'Paris', lang: 'French', currency: 'Euro', zone: 'Europe/Paris' },
+            { name: 'Japan', capital: 'Tokyo', lang: 'Japanese', currency: 'Yen', zone: 'Asia/Tokyo' },
+            { name: 'Syria', capital: 'Damascus', lang: 'Arabic', currency: 'Syrian Pound', zone: 'Asia/Damascus' },
+            { name: 'Turkey', capital: 'Ankara', lang: 'Turkish', currency: 'Turkish Lira', zone: 'Europe/Istanbul' },
+            { name: 'United Kingdom', capital: 'London', lang: 'English', currency: 'Pound', zone: 'Europe/London' }
+            // Buraya listenin tamamını aynı formatta ekleyebilirsin
         ];
 
         function filtrele() {
@@ -34,17 +43,20 @@
             const liste = document.getElementById('liste');
             liste.innerHTML = '';
             
-            ülkeler.filter(u => u.ad.toLowerCase().includes(aranan)).forEach(u => {
+            countries.filter(c => c.name.toLowerCase().includes(aranan)).forEach(c => {
                 const div = document.createElement('div');
                 div.className = 'card';
-                div.innerHTML = `<h3>${u.bayrak} ${u.ad}</h3><p id="saat-${u.ad}">${new Date().toLocaleTimeString('tr-TR', {timeZone: u.saat})}</p>`;
+                div.innerHTML = `<h3>${c.name}</h3>
+                                 <p>Capital: ${c.capital}</p>
+                                 <p>Language: ${c.lang}</p>
+                                 <p>Currency: ${c.currency}</p>
+                                 <p>Time: ${new Date().toLocaleTimeString('en-US', {timeZone: c.zone})}</p>`;
                 liste.appendChild(div);
             });
         }
         
-        // İlk yükleme
-        filtrele();
         setInterval(filtrele, 1000);
+        filtrele();
     </script>
 </body>
 </html>
