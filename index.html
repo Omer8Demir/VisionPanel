@@ -2,42 +2,46 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VisionPanel | Global Dashboard</title>
+    <title>VisionPanel | Pro Dashboard</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #050505; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; width: 100%; max-width: 1400px; }
-        .box { background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px solid #333; min-height: 200px; }
-        .ad-box { background: #000; border: 2px dashed #444; display: flex; align-items: center; justify-content: center; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #e0e0e0; margin: 0; padding: 20px; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: #161616; padding: 20px; border-radius: 12px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h2 { color: #00d4ff; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        td { padding: 8px; border-bottom: 1px solid #222; }
+        .live-stream { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <h1>VisionPanel - Global Dashboard</h1>
-    
-    <div class="grid">
-        <div class="box"><h2>Canlı Yayın</h2><iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" width="100%" height="200" frameborder="0" allowfullscreen></iframe></div>
-
-        <div class="box"><h2>Dünya Hava Durumu</h2><div id="weather">Yükleniyor...</div></div>
-
-        <div class="box"><h2>Canlı Saatler</h2><div id="clock"></div></div>
-
-        <div class="box ad-box"><h2>Reklam Alanı</h2></div>
+    <h1 style="text-align: center;">VisionPanel: Global Command Center</h1>
+    <div class="dashboard">
+        <!-- Canlı Yayın -->
+        <div class="card">
+            <h2>Canlı Yayın</h2>
+            <div class="live-stream"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe></div>
+        </div>
+        <!-- Proje Takip Tablosu -->
+        <div class="card">
+            <h2>Piyasa Takibi (5'li +)</h2>
+            <table>
+                <tr><td>Ondo</td><td>--</td></tr>
+                <tr><td>TIA</td><td>--</td></tr>
+                <tr><td>Mantra (OM)</td><td>--</td></tr>
+                <tr><td>io.net</td><td>--</td></tr>
+                <tr><td>ZEC</td><td>--</td></tr>
+                <tr><td>ZKP</td><td>--</td></tr>
+                <tr><td>Monad</td><td>--</td></tr>
+                <tr style="color: #ffd700;"><td><strong>AuCan Gold</strong></td><td><strong>Takipte</strong></td></tr>
+            </table>
+        </div>
+        <!-- Hava Durumu ve Saat -->
+        <div class="card">
+            <h2>Global Veri</h2>
+            <p>Hava Durumu: <strong>İstanbul 20°C</strong></p>
+            <p>Yerel Saat: <span id="clock"></span></p>
+        </div>
     </div>
-
-    <script>
-        // 1. Saatler
-        function updateClock() {
-            document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-
-        // 2. Hava Durumu Döngüsü (Örnek Şehirler)
-        const cities = ["İstanbul: 21°C", "New York: 18°C", "Tokyo: 24°C", "Londra: 15°C"];
-        let i = 0;
-        function updateWeather() {
-            document.getElementById('weather').innerText = cities[i];
-            i = (i + 1) % cities.length;
-        }
-        setInterval(updateWeather, 5000);
-    </script>
+    <script>setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);</script>
 </body>
 </html>
