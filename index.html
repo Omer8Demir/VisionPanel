@@ -2,43 +2,47 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VISIONPANEL | Command Center</title>
+    <title>VisionPanel | World Monitor</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-        body { margin: 0; background: #050505; color: #00f2ff; font-family: 'Orbitron', sans-serif; overflow: hidden; }
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #111 0%, #000 100%); }
-        .data-glitch { font-size: 4em; text-shadow: 0 0 15px #00f2ff; margin-bottom: 20px; }
-        .nav-hub { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 80%; max-width: 900px; }
-        .portal { border: 2px solid #00f2ff; padding: 30px; text-align: center; cursor: pointer; transition: 0.5s; background: rgba(0,242,255,0.05); }
-        .portal:hover { transform: scale(1.1); background: #00f2ff; color: #000; box-shadow: 0 0 40px #00f2ff; }
-        .footer-ticker { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid #00f2ff; padding: 15px 0; font-size: 1.2em; white-space: nowrap; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
+        .card { background: #111; border: 1px solid #333; padding: 25px; border-radius: 15px; width: 250px; text-align: center; }
+        .flag { font-size: 3em; margin-bottom: 10px; }
+        .city { font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: #00d4ff; }
+        .time { font-size: 2em; margin-bottom: 5px; }
+        .weather { color: #aaa; }
     </style>
 </head>
 <body>
 
-<div class="hero">
-    <div class="data-glitch">VISION PANEL</div>
-    <div class="nav-hub">
-        <a href="https://binance.com" class="portal">BORSALAR (CEX)</a>
-        <a href="https://uniswap.org" class="portal">MERKEZİSİZ (DEX)</a>
-        <a href="https://x.com" class="portal">SOSYAL AĞ (X)</a>
-        <a href="https://tradingview.com" class="portal">ANALİZ</a>
-        <a href="https://coingecko.com" class="portal">PİYASA</a>
-        <a href="https://www.youtube.com" class="portal">CANLI YAYIN</a>
+    <div class="card">
+        <div class="flag">🇹🇷</div>
+        <div class="city">İstanbul</div>
+        <div class="time" id="time-tr">--:--:--</div>
+        <div class="weather">20°C Bulutlu</div>
     </div>
-</div>
 
-<div class="footer-ticker" id="ticker">YÜKLENİYOR...</div>
+    <div class="card">
+        <div class="flag">🇺🇸</div>
+        <div class="city">New York</div>
+        <div class="time" id="time-us">--:--:--</div>
+        <div class="weather">18°C Güneşli</div>
+    </div>
 
-<script>
-    async function updateData() {
-        const res = await fetch('https://api.binance.com/api/v3/ticker/price');
-        const data = await res.json();
-        const top = data.slice(0, 8);
-        document.getElementById('ticker').innerHTML = top.map(i => `${i.symbol}: $${parseFloat(i.price).toFixed(2)}`).join(' • ');
-    }
-    setInterval(updateData, 2000);
-    updateData();
-</script>
+    <div class="card">
+        <div class="flag">🇯🇵</div>
+        <div class="city">Tokyo</div>
+        <div class="time" id="time-jp">--:--:--</div>
+        <div class="weather">24°C Yağmurlu</div>
+    </div>
+
+    <script>
+        function updateClocks() {
+            document.getElementById('time-tr').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'Europe/Istanbul'});
+            document.getElementById('time-us').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'America/New_York'});
+            document.getElementById('time-jp').innerText = new Date().toLocaleTimeString('tr-TR', {timeZone: 'Asia/Tokyo'});
+        }
+        setInterval(updateClocks, 1000);
+        updateClocks();
+    </script>
 </body>
 </html>
