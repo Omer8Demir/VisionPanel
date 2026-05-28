@@ -1,154 +1,168 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Global Vision Financial Panel: Real-time global monitoring, country data, and financial insights.">
-    <title>Global Vision Financial Panel</title>
-    <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
-        #header-panel { background: #111; padding: 20px; border-bottom: 2px solid #00d4ff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .support-btn { background: #ff5e00; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .container { padding: 20px; }
-        .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; background: #111; color: #fff; font-size: 1.2em; display: block; margin: 20px auto; text-align: center; }
-        .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-        .card { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333; }
-        h3 { color: #00d4ff; margin: 0 0 10px 0; }
-        .data { font-size: 0.9em; color: #ccc; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Global Vision Financial Panel: Real-time global monitoring, country data, and financial insights.">
+    <meta name="keywords" content="financial panel, global data, currency rates, country monitoring, live dashboard, visionpanel">
+    <meta name="author" content="Ömer Demir">
+    <meta property="og:title" content="Global Vision Financial Panel">
+    <meta property="og:description" content="Explore real-time global country data and financial monitoring.">
+    <meta property="og:type" content="website">
+    
+    <title>Global Vision Financial Panel</title>
+    
+    <style>
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        
+        /* Üst Bilgi Paneli */
+        #header-panel { background: #111; padding: 20px; border-bottom: 2px solid #00d4ff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .info-area { color: #aaa; font-size: 0.85em; max-width: 60%; }
+        .support-section { text-align: right; }
+        .support-btn { background: #ff5e00; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; transition: 0.3s; }
+        .support-btn:hover { background: #e05300; }
+        
+        .container { padding: 20px; }
+        .search-box { width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; background: #111; color: #fff; font-size: 1.2em; display: block; margin: 20px auto; text-align: center; }
+        .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .card { background: #111; padding: 20px; border-radius: 10px; border: 1px solid #333; transition: 0.3s; }
+        .card:hover { border-color: #00d4ff; }
+        h3 { color: #00d4ff; margin-top: 0; }
+    </style>
 </head>
 <body>
 
-    <div id="header-panel">
-        <div>
-            <h2 style="margin:0;">Global Vision Financial Panel</h2>
-            <p style="margin:5px 0;">Live time and currency reference data.</p>
-        </div>
-        <a href="https://donate.bynogame.com/supportvisionpanel" target="_blank" class="support-btn">Support Project ❤️</a>
-    </div>
+    <!-- Üst Bilgi Paneli -->
+    <div id="header-panel">
+        <div class="info-area">
+            <h2 style="margin:0; color:#fff;">Global Vision Financial Panel</h2>
+            <p style="margin:5px 0;">Real-time global monitoring and financial data hub. Support this project to keep the servers live and the data updated.</p>
+        </div>
+        <div class="support-section">
+            <a href="https://donate.bynogame.com/supportvisionpanel" target="_blank" class="support-btn">
+                Support Project ❤️
+            </a>
+        </div>
+    </div>
 
-    <div class="container">
-        <input type="text" class="search-box" id="arama" placeholder="Search country (e.g. Turkey)..." oninput="updatePanel()">
-        <div class="results" id="liste"></div>
-    </div>
+    <div class="container">
+        <input type="text" class="search-box" id="arama" placeholder="Search country..." oninput="updatePanel()">
+        <div class="results" id="liste"></div>
+    </div>
 
-    <script>
-        const data = [
-             { name: 'Afghanistan', zone: 'Asia/Kabul' }, { name: 'Germany', zone: 'Europe/Berlin' },
-            { name: 'USA', zone: 'America/New_York' }, { name: 'American Samoa', zone: 'Pacific/Pago_Pago' },
-            { name: 'Andorra', zone: 'Europe/Andorra' }, { name: 'Angola', zone: 'Africa/Luanda' },
-            { name: 'Antigua and Barbuda', zone: 'America/Antigua' }, { name: 'Argentina', zone: 'America/Argentina/Buenos_Aires' },
-            { name: 'Albania', zone: 'Europe/Tirane' }, { name: 'Australia', zone: 'Australia/Sydney' },
-            { name: 'Austria', zone: 'Europe/Vienna' }, { name: 'Azerbaijan', zone: 'Asia/Baku' },
-            { name: 'Bahamas', zone: 'America/Nassau' }, { name: 'Bahrain', zone: 'Asia/Bahrain' },
-            { name: 'Bangladesh', zone: 'Asia/Dhaka' }, { name: 'Barbados', zone: 'America/Barbados' },
-            { name: 'Belgium', zone: 'Europe/Brussels' }, { name: 'Belize', zone: 'America/Belize' },
-            { name: 'Benin', zone: 'Africa/Porto-Novo' }, { name: 'Belarus', zone: 'Europe/Minsk' },
-            { name: 'Bhutan', zone: 'Asia/Thimphu' }, { name: 'United Arab Emirates', zone: 'Asia/Dubai' },
-            { name: 'Myanmar', zone: 'Asia/Yangon' }, { name: 'Bolivia', zone: 'America/La_Paz' },
-            { name: 'Bosnia and Herzegovina', zone: 'Europe/Sarajevo' }, { name: 'Botswana', zone: 'Africa/Gaborone' },
-            { name: 'Brazil', zone: 'America/Sao_Paulo' }, { name: 'Brunei', zone: 'Asia/Brunei' },
-            { name: 'Bulgaria', zone: 'Europe/Sofia' }, { name: 'Burkina Faso', zone: 'Africa/Ouagadougou' },
-            { name: 'Burundi', zone: 'Africa/Bujumbura' }, { name: 'Cape Verde', zone: 'Atlantic/Cape_Verde' },
-            { name: 'Algeria', zone: 'Africa/Algiers' }, { name: 'Djibouti', zone: 'Africa/Djibouti' },
-            { name: 'Chad', zone: 'Africa/Ndjamena' }, { name: 'Czech Republic', zone: 'Europe/Prague' },
-            { name: 'China', zone: 'Asia/Shanghai' }, { name: 'Denmark', zone: 'Europe/Copenhagen' },
-            { name: 'East Timor', zone: 'Asia/Dili' }, { name: 'Dominican Republic', zone: 'America/Santo_Domingo' },
-            { name: 'Dominica', zone: 'America/Dominica' }, { name: 'Ecuador', zone: 'America/Guayaquil' },
-            { name: 'Equatorial Guinea', zone: 'Africa/Malabo' }, { name: 'El Salvador', zone: 'America/El_Salvador' },
-            { name: 'Indonesia', zone: 'Asia/Jakarta' }, { name: 'Eritrea', zone: 'Africa/Asmara' },
-            { name: 'Armenia', zone: 'Asia/Yerevan' }, { name: 'Estonia', zone: 'Europe/Tallinn' },
-            { name: 'Ethiopia', zone: 'Africa/Addis_Ababa' }, { name: 'Morocco', zone: 'Africa/Casablanca' },
-            { name: 'Fiji', zone: 'Pacific/Fiji' }, { name: 'Ivory Coast', zone: 'Africa/Abidjan' },
-            { name: 'Philippines', zone: 'Asia/Manila' }, { name: 'Palestine', zone: 'Asia/Gaza' },
-            { name: 'Finland', zone: 'Europe/Helsinki' }, { name: 'France', zone: 'Europe/Paris' },
-            { name: 'Gabon', zone: 'Africa/Libreville' }, { name: 'Gambia', zone: 'Africa/Banjul' },
-            { name: 'Ghana', zone: 'Africa/Accra' }, { name: 'Guinea', zone: 'Africa/Conakry' },
-            { name: 'Guinea-Bissau', zone: 'Africa/Bissau' }, { name: 'Grenada', zone: 'America/Grenada' },
-            { name: 'Greenland', zone: 'America/Nuuk' }, { name: 'Guatemala', zone: 'America/Guatemala' },
-            { name: 'Guyana', zone: 'America/Guyana' }, { name: 'South Africa', zone: 'Africa/Johannesburg' },
-            { name: 'South Korea', zone: 'Asia/Seoul' }, { name: 'Georgia', zone: 'Asia/Tbilisi' },
-            { name: 'Haiti', zone: 'America/Port-au-Prince' }, { name: 'Croatia', zone: 'Europe/Zagreb' },
-            { name: 'India', zone: 'Asia/Kolkata' }, { name: 'Netherlands', zone: 'Europe/Amsterdam' },
-            { name: 'Honduras', zone: 'America/Tegucigalpa' }, { name: 'Iraq', zone: 'Asia/Baghdad' },
-            { name: 'Iran', zone: 'Asia/Tehran' }, { name: 'Ireland', zone: 'Europe/Dublin' },
-            { name: 'Spain', zone: 'Europe/Madrid' }, { name: 'Israel', zone: 'Asia/Jerusalem' },
-            { name: 'Sweden', zone: 'Europe/Stockholm' }, { name: 'Switzerland', zone: 'Europe/Zurich' },
-            { name: 'Italy', zone: 'Europe/Rome' }, { name: 'Iceland', zone: 'Atlantic/Reykjavik' },
-            { name: 'Jamaica', zone: 'America/Jamaica' }, { name: 'Japan', zone: 'Asia/Tokyo' },
-            { name: 'Cambodia', zone: 'Asia/Phnom_Penh' }, { name: 'Cameroon', zone: 'Africa/Douala' },
-            { name: 'Canada', zone: 'America/Toronto' }, { name: 'Montenegro', zone: 'Europe/Podgorica' },
-            { name: 'Qatar', zone: 'Asia/Qatar' }, { name: 'Kazakhstan', zone: 'Asia/Almaty' },
-            { name: 'Kenya', zone: 'Africa/Nairobi' }, { name: 'Kyrgyzstan', zone: 'Asia/Bishkek' },
-            { name: 'Kiribati', zone: 'Pacific/Tarawa' }, { name: 'Colombia', zone: 'America/Bogota' },
-            { name: 'Comoros', zone: 'Indian/Comoro' }, { name: 'Congo', zone: 'Africa/Brazzaville' },
-            { name: 'DR Congo', zone: 'Africa/Kinshasa' }, { name: 'Kosovo', zone: 'Europe/Prishtina' },
-            { name: 'Costa Rica', zone: 'America/Costa_Rica' }, { name: 'Kuwait', zone: 'Asia/Kuwait' },
-            { name: 'North Korea', zone: 'Asia/Pyongyang' }, { name: 'Cuba', zone: 'America/Havana' },
-            { name: 'Laos', zone: 'Asia/Vientiane' }, { name: 'Lesotho', zone: 'Africa/Maseru' },
-            { name: 'Latvia', zone: 'Europe/Riga' }, { name: 'Liberia', zone: 'Africa/Monrovia' },
-            { name: 'Libya', zone: 'Africa/Tripoli' }, { name: 'Liechtenstein', zone: 'Europe/Vaduz' },
-            { name: 'Lithuania', zone: 'Europe/Vilnius' }, { name: 'Lebanon', zone: 'Asia/Beirut' },
-            { name: 'Luxembourg', zone: 'Europe/Luxembourg' }, { name: 'Hungary', zone: 'Europe/Budapest' },
-            { name: 'Madagascar', zone: 'Indian/Antananarivo' }, { name: 'Malawi', zone: 'Africa/Blantyre' },
-            { name: 'Malaysia', zone: 'Asia/Kuala_Lumpur' }, { name: 'Mali', zone: 'Africa/Bamako' },
-            { name: 'Malta', zone: 'Europe/Malta' }, { name: 'Marshall Islands', zone: 'Pacific/Majuro' },
-            { name: 'Mauritius', zone: 'Indian/Mauritius' }, { name: 'Mexico', zone: 'America/Mexico_City' },
-            { name: 'Egypt', zone: 'Africa/Cairo' }, { name: 'Micronesia', zone: 'Pacific/Pohnpei' },
-            { name: 'Mongolia', zone: 'Asia/Ulaanbaatar' }, { name: 'Moldova', zone: 'Europe/Chisinau' },
-            { name: 'Monaco', zone: 'Europe/Monaco' }, { name: 'Mauritania', zone: 'Africa/Nouakchott' },
-            { name: 'Mozambique', zone: 'Africa/Maputo' }, { name: 'Namibia', zone: 'Africa/Windhoek' },
-            { name: 'Nauru', zone: 'Pacific/Nauru' }, { name: 'Nepal', zone: 'Asia/Kathmandu' },
-            { name: 'Nicaragua', zone: 'America/Managua' }, { name: 'Niger', zone: 'Africa/Niamey' },
-            { name: 'Nigeria', zone: 'Africa/Lagos' }, { name: 'Norway', zone: 'Europe/Oslo' },
-            { name: 'Central African Republic', zone: 'Africa/Bangui' }, { name: 'Uzbekistan', zone: 'Asia/Tashkent' },
-            { name: 'Pakistan', zone: 'Asia/Karachi' }, { name: 'Palau', zone: 'Pacific/Palau' },
-            { name: 'Panama', zone: 'America/Panama' }, { name: 'Papua New Guinea', zone: 'Pacific/Port_Moresby' },
-            { name: 'Paraguay', zone: 'America/Asuncion' }, { name: 'Peru', zone: 'America/Lima' },
-            { name: 'Poland', zone: 'Europe/Warsaw' }, { name: 'Portugal', zone: 'Europe/Lisbon' },
-            { name: 'Romania', zone: 'Europe/Bucharest' }, { name: 'Rwanda', zone: 'Africa/Kigali' },
-            { name: 'Russia', zone: 'Europe/Moscow' }, { name: 'Samoa', zone: 'Pacific/Apia' },
-            { name: 'San Marino', zone: 'Europe/San_Marino' }, { name: 'Senegal', zone: 'Africa/Dakar' },
-            { name: 'Seychelles', zone: 'Indian/Mahe' }, { name: 'Serbia', zone: 'Europe/Belgrade' },
-            { name: 'Sierra Leone', zone: 'Africa/Freetown' }, { name: 'Singapore', zone: 'Asia/Singapore' },
-            { name: 'Slovakia', zone: 'Europe/Bratislava' }, { name: 'Slovenia', zone: 'Europe/Ljubljana' },
-            { name: 'Solomon Islands', zone: 'Pacific/Guadalcanal' }, { name: 'Somalia', zone: 'Africa/Mogadishu' },
-            { name: 'Sri Lanka', zone: 'Asia/Colombo' }, { name: 'Sudan', zone: 'Africa/Khartoum' },
-            { name: 'Suriname', zone: 'America/Paramaribo' }, { name: 'Syria', zone: 'Asia/Damascus' },
-            { name: 'Saudi Arabia', zone: 'Asia/Riyadh' }, { name: 'Chile', zone: 'America/Santiago' },
-            { name: 'Tajikistan', zone: 'Asia/Dushanbe' }, { name: 'Tanzania', zone: 'Africa/Dar_es_Salaam' },
-            { name: 'Thailand', zone: 'Asia/Bangkok' }, { name: 'Taiwan', zone: 'Asia/Taipei' },
-            { name: 'Togo', zone: 'Africa/Lomé' }, { name: 'Tonga', zone: 'Pacific/Tongatapu' },
-            { name: 'Tunisia', zone: 'Africa/Tunis' }, { name: 'Turkey', zone: 'Europe/Istanbul' },
-            { name: 'Turkmenistan', zone: 'Asia/Ashgabat' }, { name: 'Uganda', zone: 'Africa/Kampala' },
-            { name: 'Ukraine', zone: 'Europe/Kyiv' }, { name: 'Oman', zone: 'Asia/Muscat' },
-            { name: 'Uruguay', zone: 'America/Montevideo' }, { name: 'Jordan', zone: 'Asia/Amman' },
-            { name: 'Vanuatu', zone: 'Pacific/Efate' }, { name: 'Vatican City', zone: 'Europe/Vatican' },
-            { name: 'Venezuela', zone: 'America/Caracas' }, { name: 'Vietnam', zone: 'Asia/Ho_Chi_Minh' },
-            { name: 'Yemen', zone: 'Asia/Aden' }, { name: 'New Zealand', zone: 'Pacific/Auckland' },
-            { name: 'Greece', zone: 'Europe/Athens' }, { name: 'Zambia', zone: 'Africa/Lusaka' },
-            { name: 'Zimbabwe', zone: 'Africa/Harare' }
-        ];
+    <script>
+        const countries = [
+            { name: 'Afghanistan', zone: 'Asia/Kabul' }, { name: 'Germany', zone: 'Europe/Berlin' },
+            { name: 'USA', zone: 'America/New_York' }, { name: 'American Samoa', zone: 'Pacific/Pago_Pago' },
+            { name: 'Andorra', zone: 'Europe/Andorra' }, { name: 'Angola', zone: 'Africa/Luanda' },
+            { name: 'Antigua and Barbuda', zone: 'America/Antigua' }, { name: 'Argentina', zone: 'America/Argentina/Buenos_Aires' },
+            { name: 'Albania', zone: 'Europe/Tirane' }, { name: 'Australia', zone: 'Australia/Sydney' },
+            { name: 'Austria', zone: 'Europe/Vienna' }, { name: 'Azerbaijan', zone: 'Asia/Baku' },
+            { name: 'Bahamas', zone: 'America/Nassau' }, { name: 'Bahrain', zone: 'Asia/Bahrain' },
+            { name: 'Bangladesh', zone: 'Asia/Dhaka' }, { name: 'Barbados', zone: 'America/Barbados' },
+            { name: 'Belgium', zone: 'Europe/Brussels' }, { name: 'Belize', zone: 'America/Belize' },
+            { name: 'Benin', zone: 'Africa/Porto-Novo' }, { name: 'Belarus', zone: 'Europe/Minsk' },
+            { name: 'Bhutan', zone: 'Asia/Thimphu' }, { name: 'United Arab Emirates', zone: 'Asia/Dubai' },
+            { name: 'Myanmar', zone: 'Asia/Yangon' }, { name: 'Bolivia', zone: 'America/La_Paz' },
+            { name: 'Bosnia and Herzegovina', zone: 'Europe/Sarajevo' }, { name: 'Botswana', zone: 'Africa/Gaborone' },
+            { name: 'Brazil', zone: 'America/Sao_Paulo' }, { name: 'Brunei', zone: 'Asia/Brunei' },
+            { name: 'Bulgaria', zone: 'Europe/Sofia' }, { name: 'Burkina Faso', zone: 'Africa/Ouagadougou' },
+            { name: 'Burundi', zone: 'Africa/Bujumbura' }, { name: 'Cape Verde', zone: 'Atlantic/Cape_Verde' },
+            { name: 'Algeria', zone: 'Africa/Algiers' }, { name: 'Djibouti', zone: 'Africa/Djibouti' },
+            { name: 'Chad', zone: 'Africa/Ndjamena' }, { name: 'Czech Republic', zone: 'Europe/Prague' },
+            { name: 'China', zone: 'Asia/Shanghai' }, { name: 'Denmark', zone: 'Europe/Copenhagen' },
+            { name: 'East Timor', zone: 'Asia/Dili' }, { name: 'Dominican Republic', zone: 'America/Santo_Domingo' },
+            { name: 'Dominica', zone: 'America/Dominica' }, { name: 'Ecuador', zone: 'America/Guayaquil' },
+            { name: 'Equatorial Guinea', zone: 'Africa/Malabo' }, { name: 'El Salvador', zone: 'America/El_Salvador' },
+            { name: 'Indonesia', zone: 'Asia/Jakarta' }, { name: 'Eritrea', zone: 'Africa/Asmara' },
+            { name: 'Armenia', zone: 'Asia/Yerevan' }, { name: 'Estonia', zone: 'Europe/Tallinn' },
+            { name: 'Ethiopia', zone: 'Africa/Addis_Ababa' }, { name: 'Morocco', zone: 'Africa/Casablanca' },
+            { name: 'Fiji', zone: 'Pacific/Fiji' }, { name: 'Ivory Coast', zone: 'Africa/Abidjan' },
+            { name: 'Philippines', zone: 'Asia/Manila' }, { name: 'Palestine', zone: 'Asia/Gaza' },
+            { name: 'Finland', zone: 'Europe/Helsinki' }, { name: 'France', zone: 'Europe/Paris' },
+            { name: 'Gabon', zone: 'Africa/Libreville' }, { name: 'Gambia', zone: 'Africa/Banjul' },
+            { name: 'Ghana', zone: 'Africa/Accra' }, { name: 'Guinea', zone: 'Africa/Conakry' },
+            { name: 'Guinea-Bissau', zone: 'Africa/Bissau' }, { name: 'Grenada', zone: 'America/Grenada' },
+            { name: 'Greenland', zone: 'America/Nuuk' }, { name: 'Guatemala', zone: 'America/Guatemala' },
+            { name: 'Guyana', zone: 'America/Guyana' }, { name: 'South Africa', zone: 'Africa/Johannesburg' },
+            { name: 'South Korea', zone: 'Asia/Seoul' }, { name: 'Georgia', zone: 'Asia/Tbilisi' },
+            { name: 'Haiti', zone: 'America/Port-au-Prince' }, { name: 'Croatia', zone: 'Europe/Zagreb' },
+            { name: 'India', zone: 'Asia/Kolkata' }, { name: 'Netherlands', zone: 'Europe/Amsterdam' },
+            { name: 'Honduras', zone: 'America/Tegucigalpa' }, { name: 'Iraq', zone: 'Asia/Baghdad' },
+            { name: 'Iran', zone: 'Asia/Tehran' }, { name: 'Ireland', zone: 'Europe/Dublin' },
+            { name: 'Spain', zone: 'Europe/Madrid' }, { name: 'Israel', zone: 'Asia/Jerusalem' },
+            { name: 'Sweden', zone: 'Europe/Stockholm' }, { name: 'Switzerland', zone: 'Europe/Zurich' },
+            { name: 'Italy', zone: 'Europe/Rome' }, { name: 'Iceland', zone: 'Atlantic/Reykjavik' },
+            { name: 'Jamaica', zone: 'America/Jamaica' }, { name: 'Japan', zone: 'Asia/Tokyo' },
+            { name: 'Cambodia', zone: 'Asia/Phnom_Penh' }, { name: 'Cameroon', zone: 'Africa/Douala' },
+            { name: 'Canada', zone: 'America/Toronto' }, { name: 'Montenegro', zone: 'Europe/Podgorica' },
+            { name: 'Qatar', zone: 'Asia/Qatar' }, { name: 'Kazakhstan', zone: 'Asia/Almaty' },
+            { name: 'Kenya', zone: 'Africa/Nairobi' }, { name: 'Kyrgyzstan', zone: 'Asia/Bishkek' },
+            { name: 'Kiribati', zone: 'Pacific/Tarawa' }, { name: 'Colombia', zone: 'America/Bogota' },
+            { name: 'Comoros', zone: 'Indian/Comoro' }, { name: 'Congo', zone: 'Africa/Brazzaville' },
+            { name: 'DR Congo', zone: 'Africa/Kinshasa' }, { name: 'Kosovo', zone: 'Europe/Prishtina' },
+            { name: 'Costa Rica', zone: 'America/Costa_Rica' }, { name: 'Kuwait', zone: 'Asia/Kuwait' },
+            { name: 'North Korea', zone: 'Asia/Pyongyang' }, { name: 'Cuba', zone: 'America/Havana' },
+            { name: 'Laos', zone: 'Asia/Vientiane' }, { name: 'Lesotho', zone: 'Africa/Maseru' },
+            { name: 'Latvia', zone: 'Europe/Riga' }, { name: 'Liberia', zone: 'Africa/Monrovia' },
+            { name: 'Libya', zone: 'Africa/Tripoli' }, { name: 'Liechtenstein', zone: 'Europe/Vaduz' },
+            { name: 'Lithuania', zone: 'Europe/Vilnius' }, { name: 'Lebanon', zone: 'Asia/Beirut' },
+            { name: 'Luxembourg', zone: 'Europe/Luxembourg' }, { name: 'Hungary', zone: 'Europe/Budapest' },
+            { name: 'Madagascar', zone: 'Indian/Antananarivo' }, { name: 'Malawi', zone: 'Africa/Blantyre' },
+            { name: 'Malaysia', zone: 'Asia/Kuala_Lumpur' }, { name: 'Mali', zone: 'Africa/Bamako' },
+            { name: 'Malta', zone: 'Europe/Malta' }, { name: 'Marshall Islands', zone: 'Pacific/Majuro' },
+            { name: 'Mauritius', zone: 'Indian/Mauritius' }, { name: 'Mexico', zone: 'America/Mexico_City' },
+            { name: 'Egypt', zone: 'Africa/Cairo' }, { name: 'Micronesia', zone: 'Pacific/Pohnpei' },
+            { name: 'Mongolia', zone: 'Asia/Ulaanbaatar' }, { name: 'Moldova', zone: 'Europe/Chisinau' },
+            { name: 'Monaco', zone: 'Europe/Monaco' }, { name: 'Mauritania', zone: 'Africa/Nouakchott' },
+            { name: 'Mozambique', zone: 'Africa/Maputo' }, { name: 'Namibia', zone: 'Africa/Windhoek' },
+            { name: 'Nauru', zone: 'Pacific/Nauru' }, { name: 'Nepal', zone: 'Asia/Kathmandu' },
+            { name: 'Nicaragua', zone: 'America/Managua' }, { name: 'Niger', zone: 'Africa/Niamey' },
+            { name: 'Nigeria', zone: 'Africa/Lagos' }, { name: 'Norway', zone: 'Europe/Oslo' },
+            { name: 'Central African Republic', zone: 'Africa/Bangui' }, { name: 'Uzbekistan', zone: 'Asia/Tashkent' },
+            { name: 'Pakistan', zone: 'Asia/Karachi' }, { name: 'Palau', zone: 'Pacific/Palau' },
+            { name: 'Panama', zone: 'America/Panama' }, { name: 'Papua New Guinea', zone: 'Pacific/Port_Moresby' },
+            { name: 'Paraguay', zone: 'America/Asuncion' }, { name: 'Peru', zone: 'America/Lima' },
+            { name: 'Poland', zone: 'Europe/Warsaw' }, { name: 'Portugal', zone: 'Europe/Lisbon' },
+            { name: 'Romania', zone: 'Europe/Bucharest' }, { name: 'Rwanda', zone: 'Africa/Kigali' },
+            { name: 'Russia', zone: 'Europe/Moscow' }, { name: 'Samoa', zone: 'Pacific/Apia' },
+            { name: 'San Marino', zone: 'Europe/San_Marino' }, { name: 'Senegal', zone: 'Africa/Dakar' },
+            { name: 'Seychelles', zone: 'Indian/Mahe' }, { name: 'Serbia', zone: 'Europe/Belgrade' },
+            { name: 'Sierra Leone', zone: 'Africa/Freetown' }, { name: 'Singapore', zone: 'Asia/Singapore' },
+            { name: 'Slovakia', zone: 'Europe/Bratislava' }, { name: 'Slovenia', zone: 'Europe/Ljubljana' },
+            { name: 'Solomon Islands', zone: 'Pacific/Guadalcanal' }, { name: 'Somalia', zone: 'Africa/Mogadishu' },
+            { name: 'Sri Lanka', zone: 'Asia/Colombo' }, { name: 'Sudan', zone: 'Africa/Khartoum' },
+            { name: 'Suriname', zone: 'America/Paramaribo' }, { name: 'Syria', zone: 'Asia/Damascus' },
+            { name: 'Saudi Arabia', zone: 'Asia/Riyadh' }, { name: 'Chile', zone: 'America/Santiago' },
+            { name: 'Tajikistan', zone: 'Asia/Dushanbe' }, { name: 'Tanzania', zone: 'Africa/Dar_es_Salaam' },
+            { name: 'Thailand', zone: 'Asia/Bangkok' }, { name: 'Taiwan', zone: 'Asia/Taipei' },
+            { name: 'Togo', zone: 'Africa/Lomé' }, { name: 'Tonga', zone: 'Pacific/Tongatapu' },
+            { name: 'Tunisia', zone: 'Africa/Tunis' }, { name: 'Turkey', zone: 'Europe/Istanbul' },
+            { name: 'Turkmenistan', zone: 'Asia/Ashgabat' }, { name: 'Uganda', zone: 'Africa/Kampala' },
+            { name: 'Ukraine', zone: 'Europe/Kyiv' }, { name: 'Oman', zone: 'Asia/Muscat' },
+            { name: 'Uruguay', zone: 'America/Montevideo' }, { name: 'Jordan', zone: 'Asia/Amman' },
+            { name: 'Vanuatu', zone: 'Pacific/Efate' }, { name: 'Vatican City', zone: 'Europe/Vatican' },
+            { name: 'Venezuela', zone: 'America/Caracas' }, { name: 'Vietnam', zone: 'Asia/Ho_Chi_Minh' },
+            { name: 'Yemen', zone: 'Asia/Aden' }, { name: 'New Zealand', zone: 'Pacific/Auckland' },
+            { name: 'Greece', zone: 'Europe/Athens' }, { name: 'Zambia', zone: 'Africa/Lusaka' },
+            { name: 'Zimbabwe', zone: 'Africa/Harare' }
+        ];
 
-        function updatePanel() {
-            const aranan = document.getElementById('arama').value.toLowerCase();
-            const liste = document.getElementById('liste');
-            liste.innerHTML = '';
-            
-            data.filter(c => c.name.toLowerCase().includes(aranan)).forEach(c => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `<h3>${c.name}</h3>
-                                 <p class="data">Time: ${new Date().toLocaleTimeString('en-US', {timeZone: c.zone})}</p>
-                                 <p class="data">Currency: ${c.curr}</p>
-                                 <p class="data">Rate (1 USD): ${c.rate} ${c.curr}</p>`;
-                liste.appendChild(div);
-            });
-        }
-        
-        setInterval(updatePanel, 1000);
-        updatePanel();
-    </script>
+        function updatePanel() {
+            const aranan = document.getElementById('arama').value.toLowerCase();
+            const liste = document.getElementById('liste');
+            liste.innerHTML = '';
+            
+            countries.filter(c => c.name.toLowerCase().includes(aranan)).forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `<h3>${c.name}</h3><p>Local Time: ${new Date().toLocaleTimeString('en-US', {timeZone: c.zone})}</p>`;
+                liste.appendChild(div);
+            });
+        }
+        
+        setInterval(updatePanel, 1000);
+        updatePanel();
+    </script>
 </body>
-</html>
+</html>       şuan sitenin so hali
