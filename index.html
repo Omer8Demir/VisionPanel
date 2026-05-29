@@ -1,5 +1,7 @@
 
-<!DOCTYPE html>
+
+
+    <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -11,13 +13,22 @@
         .card { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; }
         h3 { color: #00d4ff; margin: 0; }
         .data { font-size: 0.85em; color: #ccc; margin: 2px 0; }
+        /* Bağış widget'ı için hizalama */
+        .donation-container { text-align: center; margin-top: 40px; padding: 20px; }
     </style>
 </head>
 <body>
 
     <h1 style="text-align:center;">Global Veri Terminali (195 Ülke)</h1>
     <input type="text" class="search-box" id="arama" placeholder="Ülke ara..." oninput="filtrele()">
+    
     <div class="grid" id="liste"></div>
+
+    <!-- Bağış Widget'ı Eklendi -->
+    <div class="donation-container">
+        <h2 style="color: #00d4ff;">Projeye Destek Ol</h2>
+        <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=b7e0cf29-c2e0-48da-8a6e-225bf1b5fdcd" width="346" height="623" frameborder="0" scrolling="no" style="overflow: gizli;"></iframe>
+    </div>
 
     <script>
         const ulkeler = [
@@ -40,5 +51,7 @@
         }
         filtrele();
     </script>
+</body>
+</html>
 </body>
 </html>
