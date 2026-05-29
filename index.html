@@ -10,22 +10,25 @@
         .card { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; }
         h3 { color: #00d4ff; margin: 0; }
         .data { font-size: 0.85em; color: #ccc; margin: 2px 0; }
-        /* Bağış widget'ı için hizalama */
-        .donation-container { text-align: center; margin-top: 40px; padding: 20px; }
+        
+        /* Bağış kutusu düzenlemesi */
+        .donation-container { text-align: center; margin: 20px auto; padding: 20px; background: #111; border: 1px solid #00d4ff; border-radius: 10px; max-width: 800px; }
+        .donation-text { color: #00d4ff; margin-bottom: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <h1 style="text-align:center;">Global Veri Terminali (195 Ülke)</h1>
+    
+    <!-- Bağış Widget'ı Üstte ve Yatay -->
+    <div class="donation-container">
+        <p class="donation-text">I am building a non-profit data terminal to support stray animals. 80% of donations are for animal care, 20% for site maintenance.</p>
+        <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=b7e0cf29-c2e0-48da-8a6e-225bf1b5fdcd" width="346" height="623" frameborder="0" scrolling="no"></iframe>
+    </div>
+
     <input type="text" class="search-box" id="arama" placeholder="Ülke ara..." oninput="filtrele()">
     
     <div class="grid" id="liste"></div>
-
-    <!-- Bağış Widget'ı Eklendi -->
-    <div class="donation-container">
-        <h2 style="color: #00d4ff;">Projeye Destek Ol</h2>
-        <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=b7e0cf29-c2e0-48da-8a6e-225bf1b5fdcd" width="346" height="623" frameborder="0" scrolling="no" style="overflow: gizli;"></iframe>
-    </div>
 
     <script>
         const ulkeler = [
