@@ -5,33 +5,44 @@
     <title>Omer8Demir</title>
     <style>
         body { background: radial-gradient(circle, #1a1a1a 0%, #000 100%); color: #ff9d00; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
-        header { padding: 40px; border-bottom: 3px solid #ff9d00; box-shadow: 0 0 20px #ff9d0044; }
-        #donation-banner { background: #2a1f00; border: 2px solid #ff9d00; padding: 15px; margin: 20px auto; color: #ff9d00; font-weight: bold; border-radius: 8px; max-width: 600px; }
-        #canvas-zone { border: 5px solid #ff9d00; background: #0f0f0f; width: 400px; height: 400px; margin: 30px auto; box-shadow: 0 0 30px #ff9d0033; display: flex; align-items: center; justify-content: center; }
-        button { background: #ff9d00; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; border-radius: 5px; transition: 0.4s; }
-        button:hover { background: #fff; transform: scale(1.05); }
+        header { padding: 40px; border-bottom: 3px solid #ff9d00; }
+        #donation-banner { background: #2a1f00; border: 2px solid #ff9d00; padding: 15px; margin: 20px auto; color: #ff9d00; border-radius: 8px; max-width: 600px; }
+        #canvas-zone { border: 5px solid #ff9d00; background: #000; width: 400px; height: 400px; margin: 30px auto; display: flex; align-items: center; justify-content: center; }
+        button { background: #ff9d00; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; border-radius: 5px; margin: 10px; }
     </style>
 </head>
 <body>
     <header>
         <div id="donation-banner">
-            🐾 DOSTLARIMIZA YARDIM ELİ 🐾<br>
-            <p style="font-size: 0.9em;">Bağışların %80'i sokaktaki dostlarımıza, %20'si projeye!</p>
-            <button>ŞİMDİ DESTEK OL</button>
+            🐾 <b>DOSTLARIMIZA YARDIM ELİ</b> 🐾<br>
+            <p>Bağışların %80'i can dostlarımıza, %20'si projeye!</p>
+            <!-- Buraya kendi bağış linkini (örneğin Patreon veya Bionluk) ekleyebilirsin -->
+            <button onclick="window.open('https://www.google.com', '_blank')">ŞİMDİ DESTEK OL</button>
         </div>
         <h1>OMER8DEMIR</h1>
     </header>
 
-    <section id="about" style="padding: 20px; color: #fff; max-width: 600px; margin: 0 auto;">
-        <h2>Hakkımda</h2>
-        <p>Ben Omer8Demir. Bu platformu, teknolojiyi ve finansal piyasaları oyun alanına dönüştürmek için tasarladım. Burada sadece verileri değil, keyfi de paylaşıyoruz.</p>
-    </section>
-
     <main>
         <div id="canvas-zone">
-            <p>Oyun başlamak için butona tıkla.</p>
+            <p id="msg">Oyun başlamak için butona tıkla.</p>
         </div>
-        <button onclick="alert('Yılan oyunu yakında burada!')">YILANI BAŞLAT</button>
+        <button onclick="startSnake()">YILANI BAŞLAT</button>
     </main>
+
+    <script>
+        function startSnake() {
+            const zone = document.getElementById('canvas-zone');
+            zone.innerHTML = '<canvas id="game" width="400" height="400"></canvas>';
+            const ctx = document.getElementById("game").getContext("2d");
+            let x = 200, y = 200, score = 0;
+            
+            // Basit bir hareket döngüsü
+            setInterval(() => {
+                ctx.fillStyle = "#000"; ctx.fillRect(0,0,400,400);
+                ctx.fillStyle = "#ff9d00"; ctx.fillRect(x, y, 20, 20);
+                x += 5; if(x > 400) x = 0;
+            }, 50);
+        }
+    </script>
 </body>
 </html>
