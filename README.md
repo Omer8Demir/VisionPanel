@@ -1,13 +1,11 @@
-# VisionPanel
-"VisionPanel: Keep your finger on the pulse of the global markets with real-time financial data, comprehensive market analysis, and high-quality live streams. Your ultimate hub for tracking global economic trends."A centralized dashboard for real-time global market data analysis and high-quality live financial streams.
-# VisionPanel
+# Omer8Demir
 
-VisionPanel is a sophisticated dashboard designed to provide real-time insights into global financial markets. This platform integrates live market data with high-quality streaming content, serving as a comprehensive hub for financial trend analysis.
+Omer8Demir, canlı yayınlar için geliştirilmiş interaktif bir terminal ve oyun platformudur. Oyunlar ve finansal takip araçlarını tek bir arayüzde birleştirir.
 
-## Features
-- **Real-time Data:** Monitor global market trends and financial indices.
-- **Live Streams:** High-quality broadcast integration for financial news and analysis.
-- **Modern Interface:** A clean, dark-themed UI optimized for performance and readability.
+## Özellikler
+- **Etkileşimli Oyunlar:** Tarayıcı üzerinden doğrudan erişilebilir oyun kütüphanesi.
+- **Canlı Terminal:** Yayıncılık için optimize edilmiş modern ve hızlı arayüz.
+- **Minimalist Tasarım:** Odaklanmayı artıran karanlık tema.
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Lisans
+Bu proje MIT Lisansı altındadır.
