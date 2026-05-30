@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Blockchain Terminal</title>
+    <style>
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+        
+        /* Bağış Butonu (Sabit ve En Üstte) */
+        .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border: 1px solid #00d4ff; border-radius: 10px; background: #111; margin-bottom: 20px; }
+        .donate-btn { background: #ff00ff; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; box-shadow: 0 0 15px #ff00ff; }
+        
+        /* Dashboard Grid */
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .card { background: #111; border: 1px solid #444; padding: 20px; border-radius: 15px; transition: 0.3s; }
+        .card:hover { border-color: #00d4ff; }
+        
+        /* Canlı Veri Alanları */
+        iframe { width: 100%; height: 400px; border: none; border-radius: 10px; }
+        h2 { color: #00d4ff; text-align: center; margin-top: 0; }
+    </style>
+</head>
+<body>
 
+    <div class="header-bar">
+        <span>Global Veri Terminali v2.0</span>
+        <a href="https://nowpayments.io/donation?api_key=b7e0cf29-c2e0-48da-8a6e-225bf1b5fdcd" target="_blank" class="donate-btn">BAĞIŞ YAP</a>
+    </div>
+
+    <div class="dashboard">
+        <div class="card">
+            <h2>Piyasa Genel Görünüm</h2>
+            <iframe src="https://cryptopanic.com/widgets/news/?color=dark&bg_color=111111&text_color=ffffff"></iframe>
+        </div>
+
+        <div class="card">
+            <h2>Fiyat Takibi (Canlı)</h2>
+            <iframe src="https://www.livecoinwatch.com/widget?fsym=BTC&tsym=USD&cryptoName=true&cryptoUrl=true"></iframe>
+        </div>
+
+        <div class="card">
+            <h2>Efsane Oyun Bölümü</h2>
+            <div style="text-align: center; padding: 100px 0; color: #00ff9d; border: 2px dashed #00ff9d;">
+                Flash Oyun Arşivi Buraya Entegre Edilebilir
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // İleride buraya özel kripto fiyatı çekme kodlarını (API) ekleyebiliriz.
+        console.log("Terminal Başlatıldı: Canlı Veri Akışı Aktif.");
+    </script>
+</body>
+</html>
